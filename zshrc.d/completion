@@ -1,0 +1,11 @@
+# vim: ft=zsh
+
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' insert-unambiguous true
+zstyle ':completion:*' max-errors 3
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.cache/zsh
+zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==32=33}:${(s.:.)LS_COLORS}")'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+autoload -Uz compinit && compinit

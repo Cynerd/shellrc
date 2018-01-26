@@ -1,0 +1,12 @@
+# vim: ft=zsh
+
+case "$TERM" in
+	xterm*|*rxvt*|*st*)
+		precmd() {
+			print -Pn "\e]0;%n@%m:%~  %(1j,%j job%(2j|s|) ,)\a"
+		}
+		preexec() {
+			print -Pn "\e]0;%n@%m:%~ !$1\a"
+		}
+		;;
+esac

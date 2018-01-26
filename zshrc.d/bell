@@ -1,0 +1,37 @@
+# vim: ft=zsh
+# Long running bell
+# Inspired by: https://gist.github.com/jpouellet/5278239
+
+zmodload zsh/datetime # load $EPOCHSECONDS builtin
+autoload -Uz add-zsh-hook
+lrbell_duration=15
+lrbell_timestamp=$EPOCHSECONDS
+lrbell_window_id=0x0
+
+lrbell_active_window_id() {
+	xprop -root 32x '\t$0' _NET_ACTIVE_WINDOW | cut -f 2
+}
+
+lrbell_begin() {
+	lrbell_timestamp=$EPOCHSECONDS
+	if [ -n "$DISPLAY" ]; then
+		lrbell_message="`pwd`: $1"
+		lrbell_window_id="$(lrbell_active_window_id)"
+	fi
+}
+
+lrbell_end() {
+	if (( $EPOCHSECONDS - $lrbell_timestamp < $lrbell_duration )); then
+		return
+	fi
+
+	print -n '\a'
+	if [ -n "$DISPLAY" ] && [ -n "$lrbell_window_id" ]; then # notify only if running in X
+		if [ "$(lrbell_active_window_id)" != "$lrbell_window_id" ]; then # And active window isn't current one
+			notify-send "Command finished" "$lrbell_message"
+		fi
+	fi
+}
+
+add-zsh-hook preexec lrbell_begin
+add-zsh-hook precmd lrbell_end

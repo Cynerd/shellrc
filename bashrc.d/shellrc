@@ -1,0 +1,5 @@
+# vim: ft=sh
+
+for sh in /etc/shellrc.d/*; do
+	[ -r "$sh" ] && . "$sh"
+done

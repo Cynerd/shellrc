@@ -1,0 +1,34 @@
+# vim: ft=sh:
+# These are utility functions loaded when we are running in Xserver
+
+[ -z "$DISPLAY" ] && return # Ignore if there is no display set
+
+
+alias feh='feh --magick-timeout 10 -.'
+
+alias i='i3-msg'
+
+
+# Clip stdin to clipboard
+clip() {
+	# Note: printf as magic to remove trailing new lines
+	printf %s "$(cat)" | xclip -selection clipboard
+}
+
+# Clip current HEAD hash to clipboard
+# Optionally you can pass commit as argument
+gitclip() {
+	[ -n "$1" ] && local CMT="$1" || local CMT=HEAD
+	git rev-parse "$CMT"| clip
+}
+# Clip current head message to clipboard
+# Optionally you can pass commit as argument
+gitmclip() {
+	[ -n "$1" ] && local CMT="$1" || local CMT=HEAD
+	git log --format=%B -n 1 "$CMT" | clip
+}
+
+# Make screenshot
+xshot() {
+	import -window "$(xdotool selectwindow)" ~/xshot_$(date +%F_%H%M%S_%N).png
+}
