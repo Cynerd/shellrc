@@ -59,9 +59,9 @@ gitbmerge() {
 	)
 }
 
-# Create new branch from master
+# Create new branch from HEAD
 gitbnew() {
-	git branch "$1" master
+	git branch "$1" HEAD
 	local NW="$(git rev-parse --show-toplevel)-$1"
 	git worktree add "$NW" $1
 	cd "$NW"
