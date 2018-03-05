@@ -13,6 +13,7 @@ alias octave='octave-cli -q'
 alias ssh='TERM="xterm-256color" ssh'
 alias gst='git status'
 alias v='vim'
+alias watch='watch -n 1 -c -t'
 
 export LESS=-R
 export LESS_TERMCAP_mb=$'\E[1;31m'
