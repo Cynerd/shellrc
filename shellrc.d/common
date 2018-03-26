@@ -83,3 +83,8 @@ ssh-clear() {
 	rm -rf ~/.cache/ssh
 	mkdir -p ~/.cache/ssh
 }
+
+# Chroot to bash to given path
+chroot-bash() {
+	sudo chroot "$1" /bin/bash
+}
