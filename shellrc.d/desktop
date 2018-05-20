@@ -2,3 +2,4 @@
 # This is handy only on desktop and is useless on server
 
 alias mutt='neomutt'
+alias sdcv='sdcv -c'
