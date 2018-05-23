@@ -30,5 +30,8 @@ gitmclip() {
 
 # Make screenshot
 xshot() {
-	import -window "$(xdotool selectwindow)" ~/xshot_$(date +%F_%H%M%S_%N).png
+	import ~/xshot_$(date +%F_%H%M%S_%N).png
+}
+xshot-screen() {
+	import -screen ~/xshot_$(date +%F_%H%M%S_%N).png
 }
