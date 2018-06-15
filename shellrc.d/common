@@ -47,6 +47,15 @@ genpasswd() {
 	tr -dc A-Za-z0-9_ < /dev/urandom | head -c "$l" | xargs
 }
 
+# Generate random hex number of given lenght
+genhex() {
+	if [ -z "$1" ]; then
+		echo "Size is required as first argument!" >&2
+		return 1
+	fi
+	tr -dc 0-9A-F < /dev/urandom | head -c "$1" | xargs
+}
+
 # Automatic branch merger (merge branch, push it to server and remove branch)
 # Expects name of the branch as argument
 gitbmerge() {
