@@ -1,0 +1,60 @@
+#!/bin/sh
+set -ex
+cd "$(dirname "$0")"
+
+I_PREFIX=/
+U_BASH=false
+U_ZSH=false
+
+while [ $# -gt 0 ]; do
+	case "$1" in
+		--help|-h)
+			echo "Usage: $0 [OPTION].."
+			echo
+			echo "Options:"
+			echo "  -h, --help"
+			echo "    Print this help text."
+			echo "  -b, --bash"
+			echo "    Install bash configuration"
+			echo "  -z, --zsh"
+			echo "    Install zsh configuration"
+			echo "  --prefix PATH"
+			echo "    Install prefix (in default set to /)"
+			exit 0
+			;;
+		--bash|-b)
+			U_BASH=true
+			;;
+		--zsh|-z)
+			U_ZSH=true
+			;;
+		--prefix)
+			shift
+			I_PREFIX="$1"
+			;;
+		*)
+			echo "Unknown option: $1" >&2
+			exit 1
+			;;
+	esac
+	shift
+done
+
+# Install shellrc
+mkdir -p "$I_PREFIX/etc"
+cp -r shellrc.d "$I_PREFIX/etc/shellrc.d"
+
+if $U_BASH; then
+	mkdir -p "$I_PREFIX/etc/bash"
+	cp -r bashrc.d/. "$I_PREFIX/etc/bash/bashrc.d"
+	mkdir -p "$I_PREFIX/usr/share/bash-completion/completions"
+	cp -r bash-completion/. "$I_PREFIX/usr/share/bash-completion/completions/"
+fi
+
+if $U_ZSH; then
+	mkdir -p "$I_PREFIX/etc/zsh"
+	cp -r zshrc.d/. "$I_PREFIX/etc/zsh/zshrc.d"
+	mkdir -p "$I_PREFIX/usr/share/zsh/site-functions"
+	cp -r zsh-completion/. "$I_PREFIX/usr/share/zsh/site-functions"
+fi
+
