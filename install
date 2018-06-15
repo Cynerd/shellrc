@@ -53,6 +53,7 @@ fi
 
 if $U_ZSH; then
 	mkdir -p "$I_PREFIX/etc/zsh"
+	cp zshrc "$I_PREFIX/etc/zsh/zshrc"
 	cp -r zshrc.d/. "$I_PREFIX/etc/zsh/zshrc.d"
 	mkdir -p "$I_PREFIX/usr/share/zsh/site-functions"
 	cp -r zsh-completion/. "$I_PREFIX/usr/share/zsh/site-functions"
