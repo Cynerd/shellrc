@@ -3,6 +3,7 @@ set -e
 cd "$(dirname "$0")"
 
 I_PREFIX=/
+U_BASE=true
 U_BASH=false
 U_ZSH=false
 
@@ -18,6 +19,8 @@ while [ $# -gt 0 ]; do
 			echo "    Install bash configuration"
 			echo "  -z, --zsh"
 			echo "    Install zsh configuration"
+			echo "  --no-base"
+			echo "    Do not install base only bash or zsh is installed"
 			echo "  --prefix PATH"
 			echo "    Install prefix (in default set to /)"
 			exit 0
@@ -27,6 +30,9 @@ while [ $# -gt 0 ]; do
 			;;
 		--zsh|-z)
 			U_ZSH=true
+			;;
+		--no-base)
+			U_BASE=false
 			;;
 		--prefix)
 			shift
@@ -41,8 +47,10 @@ while [ $# -gt 0 ]; do
 done
 
 # Install shellrc
-mkdir -p "$I_PREFIX/etc"
-cp -r shellrc.d "$I_PREFIX/etc/shellrc.d"
+if $U_BASE; then
+	mkdir -p "$I_PREFIX/etc"
+	cp -r shellrc.d "$I_PREFIX/etc/shellrc.d"
+fi
 
 if $U_BASH; then
 	mkdir -p "$I_PREFIX/etc/bash"
