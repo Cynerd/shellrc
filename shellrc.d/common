@@ -58,9 +58,14 @@ genhex() {
 
 # Automatic branch merger (merge branch, push it to server and remove branch)
 # Expects name of the branch as argument
+# It fails if it's not fast forward merge and if there is fixup! commit.
 gitbmerge() {
 	(
 		set -e
+		if [ -n "$(git log --grep="^fixup\!" HEAD.."$1")" ]; then
+			echo "First squash fixups!"
+			exit 1
+		fi
 		local WT="$(git worktree list | sed -nE "/\[$1\]/{s/([^ ]+) .*/\1/p}")"
 		if [ -n "$WT" ]; then
 			rm -r "$WT"
