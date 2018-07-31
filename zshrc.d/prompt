@@ -5,8 +5,8 @@ PROMPT="%(?..%{$fg_bold[yellow]%}EXIT: %?
 )%{$fg_bold[$NCOLOR]%}%n@%m:%{$fg_bold[blue]%}%1~%{$fg_bold[$NCOLOR]%}%(!.#.$)%{$reset_color%} "
 unset NCOLOR
 
-if [ -e ~/.local/git-prompt.sh ]; then
-	source ~/.local/git-prompt.sh
+if [ -e /usr/share/git/git-prompt.sh ]; then
+	source /usr/share/git/git-prompt.sh
 	export GIT_PS1_SHOWDIRTYSTATE=y
 	export GIT_PS1_SHOWUNTRACKEDFILES=y
 	export GIT_PS1_SHOWUPSTREAM="auto"
