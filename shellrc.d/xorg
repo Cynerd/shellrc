@@ -3,9 +3,6 @@
 
 [ -z "$DISPLAY" ] && return # Ignore if there is no display set
 
-
-alias feh='feh --magick-timeout 10 -.'
-
 alias i='i3-msg'
 
 

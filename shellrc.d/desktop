@@ -8,6 +8,9 @@ alias sdcv='sdcv -c'
 # TODO add check for wayland
 [ -z "$DISPLAY" ] && return
 
+alias feh='feh --magick-timeout 10 -.'
+
+
 # This function should not be called externaly
 # It expects PID of surf instace as first argument and all other arguments should
 # be command to be called before kill is sent.
