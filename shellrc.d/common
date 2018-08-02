@@ -103,3 +103,27 @@ ssh-clear() {
 chroot-bash() {
 	sudo chroot "$1" /bin/bash
 }
+
+# Run command with inotifywait
+# First argument has to be files then -- is expected and everything else
+# is command to be executed when file changes.
+inrun () {
+	(
+	set -e
+	local TMPFS="$(mktemp --tmpdir inrun.XXXXXXXX)"
+	trap "rm '$TMPFS'; trap '' EXIT; exit 0" EXIT INT QUIT TERM ABRT
+	while [ $# -gt 0 -a "$1" != "--" ]; do
+		echo "$1" >> "$TMPFS"
+		shift
+	done
+	if [ $# -le 1 ]; then
+		echo "Usage: inrun FILE.. -- COMMAND"
+		return 1
+	fi
+	shift
+	while true; do
+		inotifywait -qe close_write --fromfile "$TMPFS" || true
+		"$@" || true
+	done
+	)
+}

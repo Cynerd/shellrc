@@ -3,3 +3,44 @@
 
 alias mutt='neomutt'
 alias sdcv='sdcv -c'
+
+# Following section is applicable for any desktop but only for graphics##########
+# TODO add check for wayland
+[ -z "$DISPLAY" ] && return
+
+# This function should not be called externaly
+# It expects PID of surf instace as first argument and all other arguments should
+# be command to be called before kill is sent.
+__insurf_callback() {
+	local SPID=$1
+	shift
+	"$@"
+	echo kill $SPID SIGHUP
+	kill -s SIGHUP $SPID || exit 1
+}
+
+# Same as inrun but it opens first argument it founds in surf and then reloads
+# that instance automatically.
+insurf() {
+	(
+	set -e
+	# Run surf
+	surf "$1" &
+	local SPID=$!
+	trap "kill $SPID; trap '' EXIT; exit 0" EXIT INT QUIT TERM ABRT
+	# Insert our callback
+	local ISFIRST=true
+	for ARG in "$@"; do
+		if $ISFIRST; then
+			shift $#
+			ISFIRST=false
+		fi
+		set "$@" "$ARG"
+		if [ "$ARG" = "--" ]; then
+			set "$@" "__insurf_callback" "$SPID"
+		fi
+	done
+	# Run inrun
+	inrun "$@"
+	)
+}
