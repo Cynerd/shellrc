@@ -7,6 +7,7 @@ unset NCOLOR
 
 if [ -e /usr/share/git/git-prompt.sh ]; then
 	source /usr/share/git/git-prompt.sh
+	export GIT_PS1_SHOWCOLORHINTS=y
 	export GIT_PS1_SHOWDIRTYSTATE=y
 	export GIT_PS1_SHOWUNTRACKEDFILES=y
 	export GIT_PS1_SHOWUPSTREAM="auto"
