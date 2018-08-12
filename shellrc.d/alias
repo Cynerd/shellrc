@@ -1,0 +1,24 @@
+# vim: ft=sh:
+alias ls='ls --color=auto'
+eval $(dircolors -b)
+alias ll='ls -lh'
+alias df='df -h'
+alias du='du -h'
+alias grep='grep --color=auto'
+alias ip='ip -c'
+alias git='LANG=en_GB git'
+alias gdb='gdb -q'
+alias cgdb='cgdb -q'
+alias octave='octave-cli -q'
+alias ssh='TERM="xterm-256color" ssh'
+alias gst='git status'
+alias v='vim'
+alias watch='watch -n 1 -c -t -d'
+
+# Systemd aliases if we are running systemd
+if pidof systemd >/dev/null 2>/dev/null; then
+	alias sctl='sudo systemctl'
+	alias usctl='systemctl --user'
+	alias jrn='journalctl'
+	alias ujrn='jrn --user'
+fi

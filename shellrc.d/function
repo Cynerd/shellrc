@@ -1,0 +1,66 @@
+# vim: ft=sh:
+
+# Run process in background
+tobg() {
+	"$@" >/dev/null 2>&1 &
+}
+
+# Generate random password (optionally takes length of password as first argument)
+genpasswd() {
+	local l=$1
+	[ -n "$l" ] || l=16
+	tr -dc A-Za-z0-9_ < /dev/urandom | head -c "$l" | xargs
+}
+
+# Generate random hex number of given lenght
+genhex() {
+	if [ -z "$1" ]; then
+		echo "Size is required as first argument!" >&2
+		return 1
+	fi
+	tr -dc 0-9A-F < /dev/urandom | head -c "$1" | xargs
+}
+
+# Run given command every second
+dorepeat() {
+	while true; do
+		"$@"
+		sleep 1
+		echo
+	done
+}
+
+# Clear all ssh control masters
+ssh-clear() {
+	rm -rf ~/.cache/ssh
+	mkdir -p ~/.cache/ssh
+}
+
+# Chroot to bash to given path
+chroot-bash() {
+	sudo chroot "$1" /bin/bash
+}
+
+# Run command with inotifywait
+# First argument has to be files then -- is expected and everything else
+# is command to be executed when file changes.
+inrun () {
+	(
+	set -e
+	local TMPFS="$(mktemp --tmpdir inrun.XXXXXXXX)"
+	trap "rm '$TMPFS'; trap '' EXIT; exit 0" EXIT INT QUIT TERM ABRT
+	while [ $# -gt 0 -a "$1" != "--" ]; do
+		echo "$1" >> "$TMPFS"
+		shift
+	done
+	if [ $# -le 1 ]; then
+		echo "Usage: inrun FILE.. -- COMMAND"
+		return 1
+	fi
+	shift
+	while true; do
+		inotifywait -qe close_write --fromfile "$TMPFS" || true
+		"$@" || true
+	done
+	)
+}

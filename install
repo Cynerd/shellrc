@@ -6,6 +6,7 @@ I_PREFIX=/
 U_BASE=true
 U_BASH=false
 U_ZSH=false
+U_DESKTOP=false
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -15,12 +16,14 @@ while [ $# -gt 0 ]; do
 			echo "Options:"
 			echo "  -h, --help"
 			echo "    Print this help text."
+			echo "  -d, --desktop"
+			echo "    Install desktop specific configuration extensions for shellrc"
 			echo "  -b, --bash"
 			echo "    Install bash configuration"
 			echo "  -z, --zsh"
 			echo "    Install zsh configuration"
 			echo "  --no-base"
-			echo "    Do not install base only bash or zsh is installed"
+			echo "    Do not install base only bash or zsh or desktop is installed"
 			echo "  --prefix PATH"
 			echo "    Install prefix (in default set to /)"
 			exit 0
@@ -33,6 +36,9 @@ while [ $# -gt 0 ]; do
 			;;
 		--no-base)
 			U_BASE=false
+			;;
+		-d|--desktop)
+			U_DESKTOP=true
 			;;
 		--prefix)
 			shift
@@ -48,8 +54,13 @@ done
 
 # Install shellrc
 if $U_BASE; then
-	mkdir -p "$I_PREFIX/etc"
-	cp -r shellrc.d "$I_PREFIX/etc/shellrc.d"
+	mkdir -p "$I_PREFIX/etc/shellrc.d"
+	cp -r shellrc.d/. "$I_PREFIX/etc/shellrc.d"
+fi
+
+if $U_DESKTOP; then
+	mkdir -p "$I_PREFIX/etc/shellrc.d"
+	cp -r shellrc.d-desktop/. "$I_PREFIX/etc/shellrc.d"
 fi
 
 if $U_BASH; then
