@@ -1,8 +1,9 @@
 # vim: ft=sh:
 
 # Run process in background
-tobg() {
-	"$@" >/dev/null 2>&1 &
+tbg() {
+	mkdir -p /tmp/tbg-log
+	nohup "$@" >/dev/null >/tmp/tbg-log/$0-$(date +%g%m%d%H%M%S%N) &
 }
 
 # Generate random password (optionally takes length of password as first argument)
