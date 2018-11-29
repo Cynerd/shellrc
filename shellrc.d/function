@@ -3,7 +3,7 @@
 # Run process in background
 tbg() {
 	mkdir -p /tmp/tbg-log
-	nohup "$@" >/dev/null >/tmp/tbg-log/$0-$(date +%g%m%d%H%M%S%N) &
+	nohup "$@" >/dev/null >"/tmp/tbg-log/$0-$(date +%g%m%d%H%M%S%N)" &
 }
 
 # Generate random password (optionally takes length of password as first argument)
@@ -32,7 +32,7 @@ dorepeat() {
 }
 
 # Clear all ssh control masters
-ssh-clear() {
+sshclear() {
 	rm -rf ~/.cache/ssh
 	mkdir -p ~/.cache/ssh
 }
@@ -48,10 +48,11 @@ chroot-bash() {
 inrun () {
 	(
 	set -e
-	local TMPFS="$(mktemp --tmpdir inrun.XXXXXXXX)"
-	trap "rm '$TMPFS'; trap '' EXIT; exit 0" EXIT INT QUIT TERM ABRT
+	local tmpfs
+	tmpfs="$(mktemp --tmpdir inrun.XXXXXXXX)"
+	trap "rm '\$tmpfs'; trap '' EXIT; exit 0" EXIT INT QUIT TERM ABRT
 	while [ $# -gt 0 -a "$1" != "--" ]; do
-		echo "$1" >> "$TMPFS"
+		echo "$1" >> "$tmpfs"
 		shift
 	done
 	if [ $# -le 1 ]; then
@@ -60,7 +61,7 @@ inrun () {
 	fi
 	shift
 	while true; do
-		inotifywait -qe close_write --fromfile "$TMPFS" || true
+		inotifywait -qe close_write --fromfile "$tmpfs" || true
 		"$@" || true
 	done
 	)
