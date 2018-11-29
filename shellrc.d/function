@@ -37,11 +37,6 @@ sshclear() {
 	mkdir -p ~/.cache/ssh
 }
 
-# Chroot to bash to given path
-chroot-bash() {
-	sudo chroot "$1" /bin/bash
-}
-
 # Run command with inotifywait
 # First argument has to be files then -- is expected and everything else
 # is command to be executed when file changes.
