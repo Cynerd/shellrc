@@ -1,4 +1,4 @@
-_gitbmerge() {
+_gitbcheckout() {
 	[ "$COMP_CWORD" -gt 1 ] &&  return # Complete only single branch
 	local cur prev words cword
 	_init_completion || return
@@ -8,7 +8,7 @@ _gitbmerge() {
 	# TODO ignore current HEAD (merging HEAD to HEAD does not makes sense)
 	while read -r branch; do
 		branches+=("$branch")
-	done < <(find "$gdir/refs/heads" -mindepth 1 -printf '%P\n')
+	done < <(find "$gdir/refs/heads" "$gdir/refs/remotes" -mindepth 1 -printf '%P\n')
 	COMPREPLY=($(compgen -W "${branches[*]}" -- ${cur}))
 }
-complete -F _gitbmerge gitbmerge
+complete -F _gitbcheckout gitbcheckout

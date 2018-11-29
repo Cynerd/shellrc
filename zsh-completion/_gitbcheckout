@@ -1,17 +1,16 @@
 #compdef gitbmerge
 #autoload
 
-_gitbmerge() {
+_gitbcheckout() {
 	((CURRENT > 2)) &&  return # Complete only single branch
 	local gdir branch
 	gdir="$(git rev-parse --git-common-dir 2>/dev/null)" || return
 	local branches=()
-	# TODO ignore current HEAD (merging HEAD to HEAD does not makes sense)
 	while read -r branch; do
 		branches+=("$branch")
-	done < <(find "$gdir/refs/heads" -mindepth 1 -printf '%P\n')
-	_describe -t branches 'gitbmerge' branches
+	done < <(find "$gdir/refs/heads" "$gdir/refs/remotes" -mindepth 1 -printf '%P\n')
+	_describe -t branches 'gitbcheckout' branches
 }
 
-_gitbmerge
+_gitbcheckout
 # vim: ft=zsh

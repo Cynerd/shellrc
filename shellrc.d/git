@@ -19,11 +19,18 @@ gitbmerge() {
 	)
 }
 
+# Checkout branch to new work tree
+gitbcheckout() {
+	local nw
+	nw="$(git rev-parse --show-toplevel)-$1"
+	git worktree add "$nw" "$1"
+	cd "$nw"
+	git submodule update --init --recursive
+}
+alias gitbco='gitcheckout'
+
 # Create new branch from HEAD
 gitbnew() {
 	git branch "$1" HEAD
-	local NW="$(git rev-parse --show-toplevel)-$1"
-	git worktree add "$NW" $1
-	cd "$NW"
-	git submodule update --init --recursive
+	gitbcheckout "$1"
 }
