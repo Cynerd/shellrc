@@ -1,0 +1,2 @@
+# vim: ft=sh:
+export S_COLORS=auto
