@@ -1,0 +1,14 @@
+# vim: ft=sh:
+# There are desktop specific shortcuts
+
+turris() {
+	cd ~/turris/"$1"
+}
+
+projects() {
+	cd ~/projects/"$1"
+}
+
+admin() {
+	projects admin/"$1"
+}
