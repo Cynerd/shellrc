@@ -27,7 +27,7 @@ gitbcheckout() {
 	cd "$nw"
 	git submodule update --init --recursive
 }
-alias gitbco='gitcheckout'
+alias gitbco='gitbcheckout'
 
 # Create new branch from HEAD
 gitbnew() {
