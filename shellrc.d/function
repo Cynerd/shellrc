@@ -1,5 +1,11 @@
 # vim: ft=sh:
 
+# Create directory and change in to it
+mcd() {
+	mkdir -p "$*"
+	cd "$*"
+}
+
 # Run process in background
 tbg() {
 	mkdir -p /tmp/tbg-log
