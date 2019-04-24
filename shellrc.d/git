@@ -25,7 +25,7 @@ gitbcheckout() {
 	nw="$(git rev-parse --show-toplevel)-$1"
 	git worktree add "$nw" "$1"
 	cd "$nw"
-	git submodule update --init --recursive
+	git submodule update --no-fetch --init --recursive
 }
 alias gitbco='gitbcheckout'
 
