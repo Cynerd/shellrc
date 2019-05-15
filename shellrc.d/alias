@@ -14,6 +14,7 @@ alias ssh='TERM="xterm-256color" ssh'
 alias gst='git status'
 alias v='vim'
 alias watch='watch -n 1 -c -t -d'
+alias rej='find -name \*.rej'
 
 # Systemd aliases if we are running systemd
 if pidof systemd >/dev/null 2>/dev/null; then
