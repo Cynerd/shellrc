@@ -28,15 +28,6 @@ genhex() {
 	tr -dc 0-9A-F < /dev/urandom | head -c "$1" | xargs
 }
 
-# Run given command every second
-dorepeat() {
-	while true; do
-		"$@"
-		sleep 1
-		echo
-	done
-}
-
 # Clear all ssh control masters
 sshclear() {
 	rm -rf ~/.cache/ssh
