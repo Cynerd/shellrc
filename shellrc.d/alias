@@ -15,6 +15,7 @@ alias gst='git status'
 alias v='vim'
 alias watch='watch -n 1 -c -t -d'
 alias rej='find -name \*.rej'
+alias orig='find -name \*.orig'
 
 # Systemd aliases if we are running systemd
 if pidof systemd >/dev/null 2>/dev/null; then
