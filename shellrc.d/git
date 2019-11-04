@@ -3,8 +3,7 @@
 # Automatic branch merger (merge branch, push it to server and remove branch)
 # Expects name of the branch as argument
 # It fails if it's not fast forward merge and if there is fixup! commit.
-gitbmerge() {
-	(
+gitbmerge() (
 		set -e
 		if [ -n "$(git log --grep="^fixup\!" HEAD.."$1")" ]; then
 			echo "First squash fixups!"
@@ -16,8 +15,7 @@ gitbmerge() {
 			git worktree prune
 		fi
 		git merge --ff-only "$1" && git push && git branch -d "$1" && git push origin :"$1"
-	)
-}
+)
 
 # Checkout branch to new work tree
 gitbcheckout() {
