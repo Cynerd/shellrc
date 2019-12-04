@@ -1,5 +1,12 @@
 # vim: ft=sh:
 
+# Get path to worktree for git branch
+_gitbworktree() {
+	git worktree list --porcelain | \
+		awk -v ref="refs/heads/$1" \
+			'/^worktree / { worktree = $2 }; /^branch / { if ($2 == ref) { print worktree }}'
+}
+
 # Automatic branch merger (merge branch, push it to server and remove branch)
 # Expects name of the branch as argument
 # It fails if it's not fast forward merge and if there is fixup! commit.
@@ -9,9 +16,10 @@ gitbmerge() (
 			echo "First squash fixups!"
 			exit 1
 		fi
-		local WT="$(git worktree list | sed -nE "/\[$1\]/{s/([^ ]+) .*/\1/p}")"
-		if [ -n "$WT" ]; then
-			rm -r "$WT"
+		local wt
+		wt="$(_gitbworktree "$1")"
+		if [ -n "$wt" ]; then
+			rm -r "$wt"
 			git worktree prune
 		fi
 		git merge --ff-only "$1" && git push && git branch -d "$1" && git push origin :"$1"
