@@ -19,6 +19,10 @@ gitbmerge() (
 		local wt
 		wt="$(_gitbworktree "$1")"
 		if [ -n "$wt" ]; then
+			if [ -d "$wd/.git" ]; then
+				echo "Branch is checked out in root repository!"
+				return 1
+			fi
 			rm -r "$wt"
 			git worktree prune
 		fi
