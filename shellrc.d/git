@@ -12,10 +12,14 @@ _gitbworktree() {
 # It fails if it's not fast forward merge and if there is fixup! commit.
 gitbmerge() (
 		set -e
-		if [ -n "$(git log --grep="^fixup\!" HEAD.."$1")" ]; then
+		[ -z "$(git log --grep="^fixup\!" HEAD.."$1")" ] || {
 			echo "First squash fixups!"
-			exit 1
-		fi
+			return 1
+		}
+		[ -z "$(git log --grep="^Apply suggestion to " HEAD.."$1")" ] || {
+			echo "First squash suggestions!"
+			return 1
+		}
 		local wt
 		wt="$(_gitbworktree "$1")"
 		if [ -n "$wt" ]; then
