@@ -16,7 +16,7 @@ gitbmerge() (
 			echo "First squash fixups!"
 			return 1
 		}
-		[ -z "$(git log --grep="^Apply suggestion to " HEAD.."$1")" ] || {
+		[ -z "$(git log --grep="^Apply .* suggestion(s) to " HEAD.."$1")" ] || {
 			echo "First squash suggestions!"
 			return 1
 		}
