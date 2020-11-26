@@ -13,11 +13,15 @@ _gitbworktree() {
 gitbmerge() (
 		set -e
 		[ -z "$(git log --grep="^fixup\!" HEAD.."$1")" ] || {
-			echo "First squash fixups!"
+			echo "First squash fixups!" >&2
 			return 1
 		}
 		[ -z "$(git log --grep="^Apply .* suggestion(s) to " HEAD.."$1")" ] || {
-			echo "First squash suggestions!"
+			echo "First squash suggestions!" >&2
+			return 1
+		}
+		[ "$(git rev-parse HEAD)" != "$(git rev-parse "$1")" ] || {
+			echo "Nothing to merge! 🤷" >&2
 			return 1
 		}
 		local wt
