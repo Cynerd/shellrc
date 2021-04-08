@@ -1,0 +1,18 @@
+# vim: ft=sh:
+# These are general ssh helpers that are most likely not usable on server side
+# anyway thus they are deployed on desktop only.
+
+# SSHFS in client mode. In other words it is reverse sshfs mount.
+sshcfs() {
+	local target="$1"
+	local local_dir="$2"
+	local remote_dir="$3"
+	shift 3
+	[[ "$local_dir" = /* ]] || local_dir="$PWD/$local_dir"
+
+	ssh "$@" "$target" mkdir -p "$remote_dir"
+	tbg dpipe \
+		/usr/lib64/misc/sftp-server \
+		= \
+		ssh "$@" "$target" sshfs -o slave ":$local_dir" "$remote_dir"
+}
