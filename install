@@ -54,13 +54,13 @@ done
 
 # Install shellrc
 if $U_BASE; then
-	mkdir -p "$I_PREFIX/etc/shellrc.d"
-	cp -r shellrc.d/. "$I_PREFIX/etc/shellrc.d"
+	mkdir -p "$I_PREFIX/usr/share/shellrc"
+	cp -r shellrc.d/. "$I_PREFIX/usr/share/shellrc/"
 fi
 
 if $U_DESKTOP; then
-	mkdir -p "$I_PREFIX/etc/shellrc.d"
-	cp -r shellrc.d-desktop/. "$I_PREFIX/etc/shellrc.d"
+	mkdir -p "$I_PREFIX/usr/share/shellrc"
+	cp -r shellrc.d-desktop/. "$I_PREFIX/usr/share/shellrc/"
 fi
 
 if $U_BASH; then

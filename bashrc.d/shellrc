@@ -1,5 +1,5 @@
 # vim: ft=sh
 
-for sh in /etc/shellrc.d/*; do
+for sh in /usr/share/shellrc/*; do
 	[ -r "$sh" ] && . "$sh"
 done
