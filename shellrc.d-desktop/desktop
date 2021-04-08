@@ -1,7 +1,6 @@
 # vim: ft=sh:
 # This is handy only on desktop and is useless on server
 
-alias mutt='neomutt'
 alias sdcv='sdcv -c'
 
 # Following section is applicable for any desktop but only for graphics##########
