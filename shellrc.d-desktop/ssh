@@ -14,5 +14,6 @@ sshcfs() {
 	tbg dpipe \
 		/usr/lib64/misc/sftp-server \
 		= \
-		ssh "$@" "$target" sshfs -o idmap=user -o slave ":$local_dir" "$remote_dir"
+		ssh "$@" "$target" sshfs -o idmap=user -o passive -o allow_other \
+			":$local_dir" "$remote_dir"
 }
