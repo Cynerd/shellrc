@@ -1,7 +1,8 @@
 # vim: ft=sh:
 # These are utility functions loaded when we are running in Xserver
 
-[ -z "$DISPLAY" ] && return # Ignore if there is no display set
+[ -n "$DISPLAY" ] || return # Ignore if there is no display set
+[ -z "$WAYLAND_DISPLAY" ] || return
 
 alias i='i3-msg'
 
