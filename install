@@ -60,20 +60,35 @@ fi
 
 if $U_DESKTOP; then
 	mkdir -p "$I_PREFIX/usr/share/shellrc"
-	cp -r shellrc.d-desktop/. "$I_PREFIX/usr/share/shellrc/"
+	cp -r shellrc-desktop.d/. "$I_PREFIX/usr/share/shellrc/"
 fi
 
 if $U_BASH; then
 	mkdir -p "$I_PREFIX/etc/bash"
 	cp -r bashrc.d/. "$I_PREFIX/etc/bash/bashrc.d"
+	cat >"$I_PREFIX/etc/bash/bashrc.d/shellrc" <<-"EOF"
+		for sh in /usr/share/shellrc/*; do
+			[ -r "$sh" ] && . "$sh"
+		done
+	EOF
 	mkdir -p "$I_PREFIX/usr/share/bash-completion/completions"
 	cp -r bash-completion/. "$I_PREFIX/usr/share/bash-completion/completions/"
 fi
 
 if $U_ZSH; then
 	mkdir -p "$I_PREFIX/etc/zsh"
-	cp zshrc "$I_PREFIX/etc/zsh/zshrc"
+	cat >"$I_PREFIX/etc/zsh/zshrc" <<-"EOF"
+		[[ -o interactive ]] || return # skip on initialization if not interactive
+		for sh in /etc/zsh/zshrc.d/*; do
+			[ -r "$sh" ] && . "$sh"
+		done
+	EOF
 	cp -r zshrc.d/. "$I_PREFIX/etc/zsh/zshrc.d"
+	cat >"$I_PREFIX/etc/zsh/zshrc.d/shellrc" <<-"EOF"
+		for sh in /usr/share/shellrc/*; do
+			[ -r "$sh" ] && . "$sh"
+		done
+	EOF
 	mkdir -p "$I_PREFIX/usr/share/zsh/site-functions"
 	cp -r zsh-completion/. "$I_PREFIX/usr/share/zsh/site-functions"
 fi
