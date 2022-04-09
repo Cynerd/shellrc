@@ -25,7 +25,7 @@
         programs.shellrc = {
           enable = mkOption {
             type = types.bool;
-            default = false;
+            default = true;
             description = "If shellrc should be enabled.";
           };
           desktop = mkOption {
