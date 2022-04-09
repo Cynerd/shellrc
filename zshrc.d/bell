@@ -33,5 +33,7 @@ lrbell_end() {
 	fi
 }
 
-add-zsh-hook preexec lrbell_begin
-add-zsh-hook precmd lrbell_end
+if command -v xprop >/dev/null && command -v notify-send >/dev/null; then
+	add-zsh-hook preexec lrbell_begin
+	add-zsh-hook precmd lrbell_end
+fi
