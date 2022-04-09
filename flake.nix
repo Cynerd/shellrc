@@ -37,7 +37,7 @@
       };
 
       config = mkIf config.programs.shellrc.enable {
-        environment.loginShellInit = ''
+        environment.interactiveShellInit = ''
             for sh in ${./shellrc.d}/*; do
                 [ -r "$sh" ] && . "$sh"
             done
@@ -47,17 +47,19 @@
             done
           '';
 
-        programs.bash.loginShellInit = ''
+        programs.bash.interactiveShellInit = ''
             for sh in ${./bashrc.d}/*; do
                 [ -r "$sh" ] && . "$sh"
             done
           '';
+        programs.bash.promptInit = ""; # Disable default prompt as we have our own
 
-        programs.zsh.loginShellInit = mkIf config.programs.zsh.enable ''
+        programs.zsh.interactiveShellInit = mkIf config.programs.zsh.enable ''
             for sh in ${./zshrc.d}/*; do
                 [ -r "$sh" ] && . "$sh"
             done
           '';
+        programs.zsh.promptInit = ""; # Disable default prompt as we have our own
 
         environment.systemPackages = [
           zsh-completion
