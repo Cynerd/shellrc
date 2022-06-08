@@ -8,14 +8,18 @@ PROMPT="%(?..%{$fg_bold[yellow]%}EXIT: %?
 )%{$fg_bold[$NCOLOR]%}%n@%m:%{$fg_bold[blue]%}%1~%{$fg_bold[$NCOLOR]%}%(!.#.$)%{$reset_color%} "
 unset NCOLOR
 
-if [ -e /usr/share/git/git-prompt.sh ]; then
-	source /usr/share/git/git-prompt.sh
-	export GIT_PS1_SHOWCOLORHINTS=y
-	export GIT_PS1_SHOWDIRTYSTATE=y
-	export GIT_PS1_SHOWUNTRACKEDFILES=y
-	export GIT_PS1_SHOWUPSTREAM="auto"
-	export GIT_PS1_STATESEPARATOR=""
-	export GIT_PS1_SHOWUPSTREAM=y
-	export GIT_PS1_DESCRIBE_STYLE="branch"
-	RPROMPT='$(__git_ps1 "%s")'
-fi
+for gitprompt in "/usr/share/git/git-prompt.sh" "/run/current-system/sw/share/bash-completion/completions/git-prompt.sh"; do
+	if [ -e "$gitprompt"  ]; then
+		source "$gitprompt"
+		export GIT_PS1_SHOWCOLORHINTS=y
+		export GIT_PS1_SHOWDIRTYSTATE=y
+		export GIT_PS1_SHOWUNTRACKEDFILES=y
+		export GIT_PS1_SHOWUPSTREAM="auto"
+		export GIT_PS1_STATESEPARATOR=""
+		export GIT_PS1_SHOWUPSTREAM=y
+		export GIT_PS1_DESCRIBE_STYLE="branch"
+		RPROMPT='$(__git_ps1 "%s")'
+		break
+	fi
+done
+unset gitprompt
