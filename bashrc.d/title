@@ -1,7 +1,9 @@
 # vim: ft=sh
 
 function settitle {
-	echo -ne "\033]0;`whoami`@`hostname`:`pwd`\007"
+	if command -v whoami >/dev/null && command -v hostname >/dev/null && command -v pwd >/dev/null; then
+		echo -ne "\033]0;$(whoami)@$(hostname):$(pwd)\007"
+	fi
 }
 
 case "$TERM" in
