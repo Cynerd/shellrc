@@ -6,7 +6,7 @@
     nixosModule = { config, lib, pkgs, ... }:
     with lib;
     let
-      zsh-completion = pkgs.stdenv.mkDerivation rec {
+      shellrc-completion = pkgs.stdenv.mkDerivation rec {
         name = "shellrc-completion";
         src = ./.;
         nativeBuildInputs = [ pkgs.installShellFiles ];
@@ -62,7 +62,7 @@
         programs.zsh.promptInit = ""; # Disable default prompt as we have our own
 
         environment.systemPackages = [
-          zsh-completion
+          shellrc-completion
         ];
 
       };
