@@ -27,9 +27,6 @@
             installShellCompletion --zsh --name "$${comp##*/}" "$comp"
           done
         '';
-        shellHook = commonrc + bashrc + ''
-          export _SHELLRC=develop
-          '';
       };
       default = shellrc-completion;
     };
