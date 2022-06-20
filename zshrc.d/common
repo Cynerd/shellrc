@@ -9,7 +9,8 @@ setopt extendedglob
 setopt hist_ignore_dups
 setopt hist_expire_dups_first
 setopt extended_history
-setopt inc_append_history
+setopt inc_append_history_time
+unsetopt share_history
 setopt promptsubst
 unsetopt nomatch
 bindkey -e
