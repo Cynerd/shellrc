@@ -16,8 +16,8 @@ alias watch='watch -n 1 -c -t -d'
 alias rej='find -name \*.rej'
 alias orig='find -name \*.orig'
 alias mmake='make -j$(($(nproc) * 2)) -l$(nproc)'
-alias bmake='bear -- make'
-alias mbmake='bear -- make -j$(($(nproc) * 2)) -l$(nproc)'
+alias bmake='bear --append -- make'
+alias mbmake='bmake -j$(($(nproc) * 2)) -l$(nproc)'
 
 # Systemd aliases if we are running systemd
 if pidof systemd >/dev/null 2>/dev/null; then
