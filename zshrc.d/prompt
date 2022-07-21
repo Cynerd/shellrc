@@ -3,7 +3,13 @@
 # Disable default prompt
 command -v prompt >/dev/null && prompt off
 
-[ $UID -eq 0 ] && NCOLOR="red" || NCOLOR="green"
+if [ "$UID" -eq 0 ]; then
+	NCOLOR="red"
+elif [ -n "$IN_NIX_SHELL" ]; then
+	NCOLOR="yellow"
+else
+	NCOLOR="green"
+fi
 PROMPT="%(?..%{$fg_bold[yellow]%}EXIT: %?
 )%{$fg_bold[$NCOLOR]%}%n@%m:%{$fg_bold[blue]%}%1~%{$fg_bold[$NCOLOR]%}%(!.#.$)%{$reset_color%} "
 unset NCOLOR
