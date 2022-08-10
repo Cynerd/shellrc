@@ -15,7 +15,7 @@
     zshrc = loadrc ./zshrc.d;
 
     packages = pkgs: rec {
-      shellrc-completion = pkgs.stdenv.mkDerivation rec {
+      shellrc-completion = pkgs.stdenv.mkDerivation {
         name = "shellrc-completion";
         src = ./.;
         nativeBuildInputs = [ pkgs.installShellFiles ];
