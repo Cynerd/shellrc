@@ -52,3 +52,8 @@ gitbnew() {
 	git branch "$1" HEAD
 	gitbcheckout "$1"
 }
+
+# Git that uses SOCKS on my favorite port
+sgit() {
+	ALL_PROXY=socks5h://localhost:8123 git "$@"
+}
