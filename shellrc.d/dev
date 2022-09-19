@@ -1,0 +1,9 @@
+# vim: ft=sh:
+
+memcheck() {
+	valgrind --track-fds=yes --leak-check=full --track-origins=yes "$@"
+}
+
+massif() {
+	valgrind --tool=massif "$@"
+}
