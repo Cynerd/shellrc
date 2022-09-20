@@ -7,3 +7,10 @@ memcheck() {
 massif() {
 	valgrind --tool=massif "$@"
 }
+
+mbuild() {
+	if [ ! -d "build" ]; then
+		meson setup build
+	fi
+	meson compile -C build "$@"
+}
