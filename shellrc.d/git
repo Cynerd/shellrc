@@ -11,21 +11,32 @@ _gitbworktree() {
 # Expects name of the branch as argument
 # It fails if it's not fast forward merge and if there is fixup! commit.
 gitbmerge() (
+		local branch="$1"
 		set -e
-		[ -z "$(git log --grep="^fixup\!" HEAD.."$1")" ] || {
+		if git rev-parse --quiet --verify "$branch" >/dev/null; then
+			echo "No such branch: $branch" >&2
+			return 1
+		fi
+		local upstream
+		upstream="$(git rev-parse "$branch@{u}")" || true
+		if [ -n "$upstream" ] && [ "$upstream" != "$(git rev-parse "$branch")" ]; then
+			echo "First push your changes to the server!" >&2
+			return 1
+		fi
+		[ -z "$(git log --grep="^fixup\!" HEAD.."$branch")" ] || {
 			echo "First squash fixups!" >&2
 			return 1
 		}
-		[ -z "$(git log --grep="^Apply .* suggestion(s) to " HEAD.."$1")" ] || {
+		[ -z "$(git log --grep="^Apply .* suggestion(s) to " HEAD.."$branch")" ] || {
 			echo "First squash suggestions!" >&2
 			return 1
 		}
-		[ "$(git rev-parse HEAD)" != "$(git rev-parse "$1")" ] || {
+		[ "$(git rev-parse HEAD)" != "$(git rev-parse "$branch")" ] || {
 			echo "Nothing to merge! 🤷" >&2
 			return 1
 		}
 		local wt
-		wt="$(_gitbworktree "$1")"
+		wt="$(_gitbworktree "$branch")"
 		if [ -n "$wt" ]; then
 			if [ -d "$wd/.git" ]; then
 				echo "Branch is checked out in root repository!"
@@ -34,7 +45,10 @@ gitbmerge() (
 			rm -r "$wt"
 			git worktree prune
 		fi
-		git merge --ff-only "$1" && git push && git branch -d "$1" && git push origin :"$1"
+		git merge --ff-only "$branch" \
+			&& git push \
+			&& git branch -d "$branch" \
+			&& { if [ -n "$upstream" ]; then git push origin :"$branch"; fi; }
 )
 
 # Checkout branch to new work tree
