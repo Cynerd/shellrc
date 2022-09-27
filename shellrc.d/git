@@ -13,7 +13,7 @@ _gitbworktree() {
 gitbmerge() (
 		local branch="$1"
 		set -e
-		if git rev-parse --quiet --verify "$branch" >/dev/null; then
+		if ! git rev-parse --quiet --verify "$branch" >/dev/null; then
 			echo "No such branch: $branch" >&2
 			return 1
 		fi
