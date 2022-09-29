@@ -9,7 +9,7 @@ massif() {
 }
 
 mbuild() {
-	if [ ! -d "build" ]; then
+	if [ ! -f "build/build.ninja" ]; then
 		meson setup build
 	fi
 	meson compile -C build "$@"
