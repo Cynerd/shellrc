@@ -8,9 +8,23 @@ massif() {
 	valgrind --tool=massif "$@"
 }
 
-mbuild() {
+_meson_setup() {
 	if [ ! -f "build/build.ninja" ]; then
 		meson setup build
 	fi
+}
+
+mbuild() {
+	_meson_setup
 	meson compile -C build "$@"
+}
+
+mtest() {
+	_meson_setup
+	meson test -C build "$@"
+}
+
+mdist() {
+	_meson_setup
+	meson dist -C build --formats xztar,gztar,zip "$@"
 }
