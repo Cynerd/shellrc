@@ -1,5 +1,7 @@
 # vim: ft=sh:
 
+if command -v valgrind >/dev/null; then
+
 memcheck() {
 	valgrind --track-fds=yes --leak-check=full --track-origins=yes "$@"
 }
@@ -7,6 +9,11 @@ memcheck() {
 massif() {
 	valgrind --tool=massif "$@"
 }
+
+fi
+
+
+if command -v meson >/dev/null; then
 
 _meson_setup() {
 	if [ ! -f "build/build.ninja" ]; then
@@ -28,3 +35,5 @@ mdist() {
 	_meson_setup
 	meson dist -C build --formats xztar,gztar,zip "$@"
 }
+
+fi
