@@ -1,7 +1,7 @@
 # vim: ft=zsh
 
 # Disable default prompt
-prompt off
+command -v prompt >/dev/null && prompt off
 
 if [ "$UID" -eq 0 ]; then
 	NCOLOR="red"
@@ -25,6 +25,7 @@ for gitprompt in "/usr/share/git/git-prompt.sh" "/run/current-system/sw/share/ba
 		export GIT_PS1_SHOWUPSTREAM=y
 		export GIT_PS1_DESCRIBE_STYLE="branch"
 		RPROMPT='$(__git_ps1 "%s")'
+		setopt promptsubst
 		break
 	fi
 done
