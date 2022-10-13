@@ -21,10 +21,10 @@
         nativeBuildInputs = [ pkgs.installShellFiles ];
         installPhase = ''
           for comp in bash-completion/*; do
-            installShellCompletion --bash --name "$${comp##*/}.bash" "$comp"
+            installShellCompletion --bash --name "''${comp##*/}.bash" "$comp"
           done
           for comp in zsh-completion/*; do
-            installShellCompletion --zsh --name "$${comp##*/}" "$comp"
+            installShellCompletion --zsh --name "''${comp##*/}" "$comp"
           done
         '';
       };
