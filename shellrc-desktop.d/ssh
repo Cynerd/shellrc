@@ -10,9 +10,15 @@ sshcfs() {
 	shift 3
 	[[ "$local_dir" = /* ]] || local_dir="$PWD/$local_dir"
 
+	local sftp_server="/usr/lib64/misc/sftp-server"
+	if [ -e /run/current-system/sw/bin/ssh ]; then
+		sftp_server="$(readlink -f /run/current-system/sw/bin/ssh)"
+		sftp_server="${sftp_server%/bin/ssh}/libexec/sftp-server"
+	fi
+
 	ssh "$@" "$target" mkdir -p "$remote_dir"
 	dpipe \
-		/usr/lib64/misc/sftp-server \
+		"$sftp_server" \
 		= \
 		ssh "$@" "$target" sshfs -o idmap=user -o passive -o allow_other \
 			":$local_dir" "$remote_dir"
