@@ -1,7 +1,7 @@
 # vim: ft=zsh
 
 # Disable default prompt
-command -v prompt >/dev/null && prompt off
+prompt off
 
 if [ "$UID" -eq 0 ]; then
 	NCOLOR="red"
