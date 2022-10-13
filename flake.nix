@@ -15,7 +15,43 @@
     zshrc = loadrc ./zshrc.d;
 
     packages = pkgs: rec {
-      shellrc-completion = pkgs.stdenv.mkDerivation {
+      shellrc-generic = pkgs.stdenvNoCC.mkDerivation {
+        name = "shellrc-profile";
+        src = ./.;
+        installPhase = ''
+          mkdir -p "$out/etc/shellrc"
+          cp -r ./shellrc.d/. "$out/etc/shellrc/"
+        '';
+      };
+      shellrc-bashrc = pkgs.stdenvNoCC.mkDerivation {
+        name = "shellrc-profile-bash";
+        src = ./.;
+        shellrc = shellrc-generic;
+        installPhase = ''
+          mkdir -p "$out/etc/bashrc.d"
+          cp -r ./bashrc.d/. "$out/etc/bashrc.d/"
+          cat >"$out/etc/bashrc.d/shellrc" <<EOF
+          for sh in $shellrc/etc/shellrc/*; do
+            [ -r "\$sh" ] && . "\$sh"
+          done
+          EOF
+        '';
+      };
+      shellrc-zshrc = pkgs.stdenvNoCC.mkDerivation {
+        name = "shellrc-profile-zsh";
+        src = ./.;
+        shellrc = shellrc-generic;
+        installPhase = ''
+          mkdir -p "$out/etc/zshrc.d"
+          cp -r ./zshrc.d/. "$out/etc/zshrc.d/"
+          cat >"$out/etc/zshrc.d/shellrc" <<EOF
+          for sh in $shellrc/etc/shellrc/*; do
+            [ -r "\$sh" ] && . "\$sh"
+          done
+          EOF
+        '';
+      };
+      shellrc-completion = pkgs.stdenvNoCC.mkDerivation {
         name = "shellrc-completion";
         src = ./.;
         nativeBuildInputs = [ pkgs.installShellFiles ];
@@ -28,7 +64,11 @@
           done
         '';
       };
-      default = shellrc-completion;
+      shellrc = pkgs.symlinkJoin {
+        name = "shellrc";
+        paths = [ shellrc-bashrc shellrc-zshrc shellrc-completion ];
+      };
+      default = shellrc;
     };
 
   in {
