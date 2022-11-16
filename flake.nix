@@ -75,7 +75,7 @@
 
     overlays = {
       shellrc = final: prev: packages prev;
-      default = self.overlay.shellrc;
+      default = self.overlays.shellrc;
     };
 
     nixosModules = {
