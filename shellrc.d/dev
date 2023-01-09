@@ -17,7 +17,7 @@ if command -v meson >/dev/null; then
 
 _meson_setup() {
 	if [ ! -f "build/build.ninja" ]; then
-		meson setup build
+		meson setup -Doptimization=plain build
 	fi
 }
 
