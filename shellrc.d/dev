@@ -1,14 +1,12 @@
 # vim: ft=sh:
 
+
 if command -v valgrind >/dev/null; then
 
-memcheck() {
-	valgrind --track-fds=yes --leak-check=full --track-origins=yes "$@"
-}
-
-massif() {
-	valgrind --tool=massif "$@"
-}
+	alias memcheck="valgrind --track-fds=yes --leak-check=full --track-origins=yes"
+	alias massif="valgrind --tool=massif"
+	alias drd="valgrind --tool=drd"
+	alias helgrind="valgrind --tool=helgrind"
 
 fi
 
@@ -42,5 +40,17 @@ mdist() {
 	_meson_setup \
 		&& meson dist -C build --formats xztar,gztar,zip "$@"
 }
+
+fi
+
+
+if command -v bear >/dev/null; then
+
+	bmake() {
+		mkdir -p build
+		bear --output build/compile_commands.json --append -- make "$@"
+	}
+
+	alias mbmake='bmake -j$(($(nproc) * 2)) -l$(nproc)'
 
 fi
