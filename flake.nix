@@ -24,5 +24,8 @@
         packages = selfPkgs // {default = selfPkgs.shellrc-bash;};
         legacyPackages = pkgs.extend self.overlays.default;
         formatter = pkgs.alejandra;
+        checks.statix =
+          pkgs.runCommandNoCC "check-statix" {}
+          "${pkgs.statix}/bin/statix check ${./.} && touch $out";
       });
 }
