@@ -7,16 +7,6 @@ overlays: {
 with lib; let
   cnf = config.programs.shellrc;
   zshEnable = config.programs.zsh.enable;
-
-  # Source all files in an appropriate shell directory in every profile
-  shellInit = dir: ''
-    for p in $NIX_PROFILES; do
-      for file in $p/etc/${dir}/*; do
-        [ -f "$file" ] || continue
-        . "$file"
-      done
-    done
-  '';
 in {
   options = {
     programs.shellrc = {
@@ -37,12 +27,31 @@ in {
     {
       nixpkgs.overlays = overlays;
 
-      programs.bash.interactiveShellInit = shellInit "bashrc.d";
-      programs.zsh.interactiveShellInit = mkIf zshEnable (shellInit "zshrc.d");
+      environment.pathsToLink = ["/etc/shellrc.d" "/etc/bashrc.d"] ++ optional zshEnable "/etc/zshrc.d";
+      programs.bash.interactiveShellInit = ''
+        # Load files provided by packages
+        for p in $NIX_PROFILES; do
+          [ -e $p/etc/bashrc.d ] || continue
+          for file in $p/etc/bashrc.d/*; do
+            [ -f "$file" ] || continue
+            . "$file"
+          done
+        done
+      '';
+      programs.zsh.interactiveShellInit = mkIf zshEnable ''
+        # Load files provided by packages
+        for p in ''${=NIX_PROFILES}; do
+          [ -e $p/etc/zshrc.d ] || continue
+          for file in $p/etc/zshrc.d/*; do
+            [ -f "$file" ] || continue
+            . "$file"
+          done
+        done
+      '';
     }
     (mkIf cnf.enable {
       environment.systemPackages =
-        [pkgs.shellrc-bash]
+        [pkgs.shellrc-generic pkgs.shellrc-bash]
         ++ optional cnf.desktop pkgs.shellrc-desktop
         ++ optional zshEnable pkgs.shellrc-zsh;
 

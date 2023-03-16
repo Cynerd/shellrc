@@ -19,14 +19,14 @@
     shellrc-bash = pkgs.stdenvNoCC.mkDerivation {
       name = "shellrc-bash";
       src = ./.;
-      propagatedBuildInputs = [shellrcPkgs.shellrc-generic];
+      nativeBuildInputs = [pkgs.installShellFiles];
       installPhase = ''
         mkdir -p "$out/etc/bashrc.d"
         cp -r ./bashrc.d/. "$out/etc/bashrc.d/"
         cat >"$out/etc/bashrc.d/shellrc" <<EOF
         # Load ShellRC files
-        for p in $NIX_PROFILES; do
-          for sh in $p/etc/shellrc.d/*; do
+        for p in \$NIX_PROFILES; do
+          for sh in \$p/etc/shellrc.d/*; do
             [ -r "\$sh" ] && . "\$sh"
           done
         done
@@ -36,17 +36,17 @@
         done
       '';
     };
-    shellrc-zsh = pkgs.stdenvNoCC.mkDerivation {
+    shellrc-zsh= pkgs.stdenvNoCC.mkDerivation {
       name = "shellrc-zsh";
       src = ./.;
-      propagatedBuildInputs = [shellrcPkgs.shellrc-generic];
+      nativeBuildInputs = [pkgs.installShellFiles];
       installPhase = ''
         mkdir -p "$out/etc/zshrc.d"
         cp -r ./zshrc.d/. "$out/etc/zshrc.d/"
         cat >"$out/etc/zshrc.d/shellrc" <<EOF
         # Load ShellRC files
-        for p in $NIX_PROFILES; do
-          for sh in $p/etc/shellrc.d/*; do
+        for profile in \''${=NIX_PROFILES}; do
+          for sh in \$profile/etc/shellrc.d/*; do
             [ -r "\$sh" ] && . "\$sh"
           done
         done
