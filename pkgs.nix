@@ -36,7 +36,7 @@
         done
       '';
     };
-    shellrc-zsh= pkgs.stdenvNoCC.mkDerivation {
+    shellrc-zsh = pkgs.stdenvNoCC.mkDerivation {
       name = "shellrc-zsh";
       src = ./.;
       nativeBuildInputs = [pkgs.installShellFiles];
@@ -56,6 +56,21 @@
         done
       '';
     };
+    shellrc-setup = pkgs.writeScriptBin "shellrc-setup" ''
+      #!/usr/bin/env bash
+      cat >~/.bashrc <<EOF
+      for sh in ~/.nix-profile/etc/bashrc.d/*; do
+        [ -r "\$sh" ] || continue
+        source "\$sh"
+      done
+      EOF
+      cat >~/.zshrc <<EOF
+      for sh in ~/.nix-profile/etc/zshrc.d/*; do
+        [ -r "\$sh" ] || continue
+        source "\$sh"
+      done
+      EOF
+    '';
   };
 in
   shellrcPkgs
