@@ -1,0 +1,20 @@
+# vim: ft=sh:
+# There are desktop specific shortcuts
+
+if [ -d ~/turris ]; then
+	turris() {
+		cd ~/turris/"$1" || return
+	}
+fi
+
+if [ -d ~/projects ]; then
+
+	projects() {
+		cd ~/projects/"$1" || return
+	}
+
+	admin() {
+		projects admin/"$1"
+	}
+
+fi

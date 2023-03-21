@@ -1,0 +1,19 @@
+# vim: ft=sh:
+# These are utility functions loaded when we are running in Sway
+[ "$XDG_CURRENT_DESKTOP" != "sway" ] && return
+
+alias swm='swaymsg'
+
+
+# Clip stdin to clipboard
+clip() {
+	wl-copy --trim-newline
+}
+
+
+sway_outputs() {
+	swaymsg -t get_outputs
+}
+sway_inputs() {
+	swaymsg -t get_inputs
+}

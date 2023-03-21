@@ -1,6 +1,4 @@
 # vim: ft=sh:
-# These are general ssh helpers that are most likely not usable on server side
-# anyway thus they are deployed on desktop only.
 
 # SSHFS in client mode. In other words it is reverse sshfs mount.
 sshcfs() {

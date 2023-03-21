@@ -1,13 +1,24 @@
 # vim: ft=sh:
 # This is handy only on desktop and is useless on server
 
-alias sdcv='sdcv -c'
 
-# Following section is applicable for any desktop but only for graphics##########
-# TODO add check for wayland
+# Following section is applicable for any desktop but only for graphics
+# The check is for XOrg but thanks to XWayland it works for Wayland as well.
 [ -z "$DISPLAY" ] && return
 
 alias feh='feh --conversion-timeout 10 -.'
+
+# Clip current HEAD hash to clipboard
+# Optionally you can pass commit as argument
+gitclip() {
+	git rev-parse "${1:-HEAD}"| clip
+}
+# Clip current head message to clipboard
+# Optionally you can pass commit as argument
+gitmclip() {
+	git log --format=%B -n 1 "${1:-HEAD}" | clip
+}
+# NOTE: clip comes either from xorg or sway file
 
 
 # This function should not be called externaly
@@ -17,8 +28,8 @@ __insurf_callback() {
 	local SPID=$1
 	shift
 	"$@"
-	echo kill $SPID SIGHUP
-	kill -s SIGHUP $SPID || exit 1
+	echo "kill $SPID SIGHUP"
+	kill -s SIGHUP "$SPID" || exit 1
 }
 
 # Same as inrun but it opens first argument it founds in surf and then reloads

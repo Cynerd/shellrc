@@ -24,3 +24,7 @@ if pidof systemd >/dev/null 2>/dev/null; then
 	alias jrn='journalctl'
 	alias ujrn='jrn --user'
 fi
+
+if command -v sdcv 2>/dev/null >&2; then
+	alias sdcv='sdcv -c'
+fi

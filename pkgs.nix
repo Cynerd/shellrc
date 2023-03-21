@@ -1,36 +1,17 @@
 {pkgs}: let
   shellrcPkgs = {
-    shellrc-generic = pkgs.stdenvNoCC.mkDerivation {
-      name = "shellrc-generic";
-      src = ./.;
-      installPhase = ''
-        mkdir -p "$out/etc/shellrc.d"
-        cp -r ./shellrc.d/. "$out/etc/shellrc.d/"
-      '';
-    };
-    shellrc-desktop = pkgs.stdenvNoCC.mkDerivation {
-      name = "shellrc-desktop";
-      src = ./.;
-      installPhase = ''
-        mkdir -p "$out/etc/shellrc.d"
-        cp -r ./shellrc-desktop.d/. "$out/etc/shellrc.d/"
-      '';
-    };
     shellrc-bash = pkgs.stdenvNoCC.mkDerivation {
       name = "shellrc-bash";
       src = ./.;
       nativeBuildInputs = [pkgs.installShellFiles];
       installPhase = ''
-        mkdir -p "$out/etc/bashrc.d"
-        cp -r ./bashrc.d/. "$out/etc/bashrc.d/"
-        cat >"$out/etc/bashrc.d/shellrc" <<EOF
-        # Load ShellRC files
-        for p in \$NIX_PROFILES; do
-          for sh in \$p/etc/shellrc.d/*; do
-            [ -r "\$sh" ] && . "\$sh"
-          done
-        done
+        mkdir -p "$out/bin"
+        cat >"$out/bin/shellrc-bash" <<EOF
+        #!/usr/bin/env bash
+        echo source ${./bashrc.d}/*;
+        echo source ${./shellrc.d}/*;
         EOF
+        chmod +x "$out/bin/shellrc-bash"
         for comp in bash-completion/*; do
           installShellCompletion --bash --name "''${comp##*/}.bash" "$comp"
         done
@@ -41,35 +22,31 @@
       src = ./.;
       nativeBuildInputs = [pkgs.installShellFiles];
       installPhase = ''
-        mkdir -p "$out/etc/zshrc.d"
-        cp -r ./zshrc.d/. "$out/etc/zshrc.d/"
-        cat >"$out/etc/zshrc.d/shellrc" <<EOF
-        # Load ShellRC files
-        for profile in \''${=NIX_PROFILES}; do
-          for sh in \$profile/etc/shellrc.d/*; do
-            [ -r "\$sh" ] && . "\$sh"
-          done
+        mkdir -p "$out/bin"
+        cat >"$out/bin/shellrc-zsh" <<"EOF"
+        #!/usr/bin/env zsh
+        for file in ${./zshrc.d}/* ${./shellrc.d}/*; do
+          echo "source $file;"
         done
         EOF
+        chmod +x "$out/bin/shellrc-zsh"
         for comp in zsh-completion/*; do
           installShellCompletion --zsh --name "''${comp##*/}" "$comp"
         done
       '';
     };
-    shellrc-setup = pkgs.writeScriptBin "shellrc-setup" ''
+    shellrc-user-setup = pkgs.writeScriptBin "shellrc-user-setup" ''
       #!/usr/bin/env bash
-      cat >~/.bashrc <<EOF
-      for sh in ~/.nix-profile/etc/bashrc.d/*; do
-        [ -r "\$sh" ] || continue
-        source "\$sh"
-      done
-      EOF
-      cat >~/.zshrc <<EOF
-      for sh in ~/.nix-profile/etc/zshrc.d/*; do
-        [ -r "\$sh" ] || continue
-        source "\$sh"
-      done
-      EOF
+      cmdbash='eval $(shellrc-bash)'
+      cmdzsh='eval $(shellrc-zsh)'
+      if command -v shellrc-bash 2>/dev/null >&2 \
+          && ! grep -xf "$cmdbash" ~/.bashrc; then
+        echo "$cmdbash" >>~/.bashrc
+      fi
+      if command -v shellrc-zsh 2>/dev/null >&2 \
+          && ! grep -xf "$cmdzsh" ~/.zshrc; then
+          echo "$cmdzsh" >>~/.zshrc
+      fi
     '';
   };
 in
