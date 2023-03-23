@@ -20,11 +20,13 @@ in {
       programs.zsh.promptInit = ""; # Disable default prompt as we have our own
 
       programs.bash.interactiveShellInit = ''
-        eval $(${pkgs.shellrc-bash}/bin/shellrc-bash)
+        eval $(/run/current-system/sw/bin/shellrc-bash)
       '';
       programs.zsh.interactiveShellInit = mkIf zshEnable ''
-        eval $(${pkgs.shellrc-zsh}/bin/shellrc-zsh)
+        eval $(/run/current-system/sw/bin/shellrc-zsh)
       '';
+
+      environment.systemPackages = with pkgs; [shellrc-bash] ++ (optional zshEnable shellrc-zsh);
     })
   ];
 }
