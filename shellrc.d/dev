@@ -41,6 +41,14 @@ mdist() {
 		&& meson dist -C build --formats xztar,gztar,zip "$@"
 }
 
+mupdate() {
+	meson subprojects update
+}
+
+mpurge() {
+	meson subprojects purge
+}
+
 fi
 
 
