@@ -17,12 +17,3 @@ sway_outputs() {
 sway_inputs() {
 	swaymsg -t get_inputs
 }
-
-if command -v nix >/dev/null; then
-
-unetbootin() (
-	nix shell 'nixpkgs#xorg.xhost' 'nixpkgs#unetbootin' \
-		-c 'bash' -c "xhost local:root && sudo QT_X11_NO_MITSHM=1 unetbootin $*"
-)
-
-fi
