@@ -40,11 +40,11 @@
       cmdbash='eval $(shellrc-bash)'
       cmdzsh='eval $(shellrc-zsh)'
       if command -v shellrc-bash 2>/dev/null >&2 \
-          && ! grep -xf "$cmdbash" ~/.bashrc; then
+          && ! grep -qxF "$cmdbash" ~/.bashrc 2>/dev/null; then
         echo "$cmdbash" >>~/.bashrc
       fi
       if command -v shellrc-zsh 2>/dev/null >&2 \
-          && ! grep -xf "$cmdzsh" ~/.zshrc; then
+          && ! grep -qxF "$cmdzsh" ~/.zshrc 2>/dev/null; then
           echo "$cmdzsh" >>~/.zshrc
       fi
     '';
