@@ -6,10 +6,11 @@
       nativeBuildInputs = [pkgs.installShellFiles];
       installPhase = ''
         mkdir -p "$out/bin"
-        cat >"$out/bin/shellrc-bash" <<EOF
+        cat >"$out/bin/shellrc-bash" <<"EOF"
         #!/usr/bin/env bash
-        echo source ${./bashrc.d}/*;
-        echo source ${./shellrc.d}/*;
+        for file in ${./bashrc.d}/* ${./shellrc.d}/*; do
+          echo "source $file;"
+        done
         EOF
         chmod +x "$out/bin/shellrc-bash"
         for comp in bash-completion/*; do
