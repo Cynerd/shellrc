@@ -16,6 +16,7 @@ alias watch='watch -n 1 -c -t -d'
 alias rej='find -name \*.rej'
 alias orig='find -name \*.orig'
 alias mmake='make -j$(($(nproc) * 2)) -l$(nproc)'
+alias xo='xdg-open'
 
 # Systemd aliases if we are running systemd
 if pidof systemd >/dev/null 2>/dev/null; then
