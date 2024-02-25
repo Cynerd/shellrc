@@ -62,3 +62,7 @@ if command -v bear >/dev/null; then
 	alias mbmake='bmake -j$(($(nproc) * 2)) -l$(nproc)'
 
 fi
+
+glv() {
+	GITLAB_TOKEN="$(pass gitlab.com/nvim-token)" nvim -c 'lua require("gitlab").review()'
+}

@@ -11,7 +11,7 @@ alias cgdb='cgdb -q'
 alias octave='octave-cli -q'
 alias ssh='TERM="xterm-256color" ssh'
 alias gst='git status'
-alias v='vim'
+alias v='nvim'
 alias watch='watch -n 1 -c -t -d'
 alias rej='find -name \*.rej'
 alias orig='find -name \*.orig'
@@ -29,3 +29,7 @@ fi
 if command -v sdcv 2>/dev/null >&2; then
 	alias sdcv='sdcv -c'
 fi
+
+nvim_config() (
+	cd ~/.config/nvim || v init.vim
+)
