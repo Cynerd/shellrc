@@ -66,3 +66,7 @@ fi
 glv() {
 	GITLAB_TOKEN="$(pass gitlab.com/nvim-token)" nvim -c 'lua require("gitlab").review()'
 }
+
+nvim_config() (
+	cd ~/.config/nvim && nvim init.vim
+)
