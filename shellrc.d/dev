@@ -70,3 +70,14 @@ glv() {
 nvim_config() (
 	cd ~/.config/nvim && nvim init.vim
 )
+
+if command -v nix 2>/dev/null >&2; then
+	nrun() {
+		nix run . -- "$@"
+	}
+	nrun_() {
+		local package="$1"
+		shift
+		nix run ".#$package" -- "$@"
+	}
+fi
