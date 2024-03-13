@@ -33,3 +33,7 @@ fi
 if command -v sdcv 2>/dev/null >&2; then
 	alias sdcv='sdcv -c'
 fi
+
+if command -v nix 2>/dev/null >&2; then
+	alias nrun='nix run .'
+fi
