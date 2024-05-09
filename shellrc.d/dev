@@ -12,6 +12,7 @@ fi
 if command -v meson >/dev/null; then
 
 	msetup() {
+		set -- "-Doptimization=plain" "$@"
 		if [[ -f "build/build.ninja" ]]; then
 			[[ $# -eq 0 ]] ||
 				meson configure build "$@"
