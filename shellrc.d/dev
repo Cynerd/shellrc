@@ -1,6 +1,5 @@
 # vim: ft=sh:
 
-
 if command -v valgrind >/dev/null; then
 
 	alias memcheck="valgrind --track-fds=yes --leak-check=full --track-origins=yes"
@@ -10,47 +9,47 @@ if command -v valgrind >/dev/null; then
 
 fi
 
-
 if command -v meson >/dev/null; then
 
-_meson_setup() {
-	if [ ! -f "build/build.ninja" ]; then
-		meson setup -Doptimization=plain build
-	fi
-}
+	msetup() {
+		if [[ -f "build/build.ninja" ]]; then
+			[[ $# -eq 0 ]] ||
+				meson configure build "$@"
+		else
+			meson setup "$@" build
+		fi
+	}
 
-mbuild() {
-	_meson_setup \
-		&& meson compile -C build "$@"
-}
+	mbuild() {
+		msetup &&
+			meson compile -C build "$@"
+	}
 
-mtest() {
-	_meson_setup \
-		&& meson test -C build "$@"
-}
+	mtest() {
+		msetup &&
+			meson test -C build "$@"
+	}
 
-mcoverage() {
-	_meson_setup \
-		&& meson configure build -Db_coverage=true \
-		&& meson test -C build "$@" \
-		&& ninja -C build coverage-html
-}
+	mcoverage() {
+		msetup -Db_coverage=true &&
+			meson test -C build "$@" &&
+			ninja -C build coverage-html
+	}
 
-mdist() {
-	_meson_setup \
-		&& meson dist -C build --formats xztar,gztar,zip "$@"
-}
+	mdist() {
+		msetup &&
+			meson dist -C build --formats xztar,gztar,zip "$@"
+	}
 
-mupdate() {
-	meson subprojects update
-}
+	mupdate() {
+		meson subprojects update
+	}
 
-mpurge() {
-	meson subprojects purge
-}
+	mpurge() {
+		meson subprojects purge
+	}
 
 fi
-
 
 if command -v bear >/dev/null; then
 
