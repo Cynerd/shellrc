@@ -3,9 +3,11 @@
 if command -v valgrind >/dev/null; then
 
 	alias memcheck="valgrind --track-fds=yes --leak-check=full --track-origins=yes"
+	alias callgrind="valgrind --tool=callgrind"
 	alias massif="valgrind --tool=massif"
 	alias drd="valgrind --tool=drd"
 	alias helgrind="valgrind --tool=helgrind"
+	alias dhat="valgrind --tool=dhat"
 
 fi
 
