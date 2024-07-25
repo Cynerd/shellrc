@@ -2,12 +2,12 @@
 
 if command -v valgrind >/dev/null; then
 
-	alias memcheck="valgrind --track-fds=yes --leak-check=full --track-origins=yes"
-	alias callgrind="valgrind --tool=callgrind"
-	alias massif="valgrind --tool=massif"
-	alias drd="valgrind --tool=drd"
-	alias helgrind="valgrind --tool=helgrind"
-	alias dhat="valgrind --tool=dhat"
+	alias memcheck="valgrind --error-exitcode=118 --track-fds=yes --leak-check=full --track-origins=yes"
+	alias callgrind="valgrind --error-exitcode=118 --tool=callgrind"
+	alias massif="valgrind --error-exitcode=118 --tool=massif"
+	alias drd="valgrind --error-exitcode=118 --tool=drd"
+	alias helgrind="valgrind --error-exitcode=118 --tool=helgrind"
+	alias dhat="valgrind --error-exitcode=118 --tool=dhat"
 
 fi
 
