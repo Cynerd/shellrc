@@ -41,12 +41,12 @@
       cmdbash='eval $(shellrc-bash)'
       cmdzsh='eval $(shellrc-zsh)'
       if command -v shellrc-bash 2>/dev/null >&2 \
-          && ! grep -qxF "$cmdbash" ~/.profile 2>/dev/null; then
-        echo "$cmdbash" >>~/.profile
+          && ! grep -qxF "$cmdbash" ~/.bashrc 2>/dev/null; then
+        echo "$cmdbash" >>~/.bashrc
       fi
       if command -v shellrc-zsh 2>/dev/null >&2 \
-          && ! grep -qxF "$cmdzsh" ~/.zprofile 2>/dev/null; then
-          echo "$cmdzsh" >>~/.zprofile
+          && ! grep -qxF "$cmdzsh" ~/.zshrc 2>/dev/null; then
+          echo "$cmdzsh" >>~/.zshrc
       fi
     '';
   };
