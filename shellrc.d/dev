@@ -61,6 +61,11 @@ if command -v bear >/dev/null; then
 		bear --output build/compile_commands.json --append -- make "$@"
 	}
 
+	bmmake() {
+		mkdir -p build
+		bear --output build/compile_commands.json --append -- make "-j$(($(nproc) * 2))" "-l$(nproc)" "$@"
+	}
+
 	alias mbmake='bmake -j$(($(nproc) * 2)) -l$(nproc)'
 
 fi
