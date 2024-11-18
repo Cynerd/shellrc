@@ -47,6 +47,7 @@ gitbmerge() (
 		fi
 		git merge --ff-only "$branch" \
 			&& git push \
+			&& sleep 1 \
 			&& git branch -d "$branch" \
 			&& { if [ -n "$upstream" ]; then git push origin :"$branch"; fi; }
 )
