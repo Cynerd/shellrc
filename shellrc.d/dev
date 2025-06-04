@@ -80,11 +80,11 @@ nvim_config() (
 
 if command -v nix 2>/dev/null >&2; then
 	nrun() {
-		nix run . -- "$@"
+		nix run .?submodules=1# -- "$@"
 	}
 	nrun_() {
 		local package="$1"
 		shift
-		nix run ".#$package" -- "$@"
+		nix run ".?submodules=1#$package" -- "$@"
 	}
 fi
