@@ -5,7 +5,7 @@ command -v prompt >/dev/null && prompt off
 
 if [ "$UID" -eq 0 ]; then
 	NCOLOR="red"
-elif [ -n "$IN_NIX_SHELL" ]; then
+elif [ -n "${IN_NIX_SHELL}${GUIX_ENVIRONMENT}" ]; then
 	NCOLOR="yellow"
 else
 	NCOLOR="green"
