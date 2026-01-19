@@ -30,6 +30,9 @@ if pidof systemd >/dev/null 2>/dev/null; then
 	alias jrn='journalctl'
 	alias ujrn='jrn --user'
 fi
+if pidof systemd-networkd >/dev/null 2>/dev/null; then
+	alias nctl='sudo networkctl'
+fi
 
 if command -v sdcv 2>/dev/null >&2; then
 	alias sdcv='sdcv -c'
